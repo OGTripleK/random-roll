@@ -3,13 +3,7 @@
 A simple Flow Launcher plugin that generates random numbers or yes/no answers.
 
 ## Installation
-
-1. Download or clone this repository
-2. Copy the plugin files to your Flow Launcher plugins directory:
-   - On Windows: `%APPDATA%\FlowLauncher\Plugins\`
-   - Create a new folder for the plugin (e.g., `RandomRoll`)
-3. Place all files (`plugin.json`, `randomroll.py`, `settings.json`, `icon.png`) in the plugin folder
-4. Restart Flow Launcher or reload plugins
+- Postpone
 
 ## Usage
 
