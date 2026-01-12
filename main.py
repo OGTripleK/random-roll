@@ -143,15 +143,11 @@ def main():
     """Main entry point for the plugin"""
     plugin = RandomRollPlugin()
 
-    # Check if stdin is available
-    if sys.stdin is None:
-        print(json.dumps({"error": "stdin is not available"}))
-        return
-
-    # Read from stdin line by line
-    for line in sys.stdin:
+    # Flow Launcher passes the JSON-RPC request via sys.argv[1]
+    # not through stdin like traditional JSON-RPC
+    if len(sys.argv) > 1:
         try:
-            request = json.loads(line.strip())
+            request = json.loads(sys.argv[1])
             method = request.get("method", "")
             parameters = request.get("parameters", [])
 
@@ -162,13 +158,17 @@ def main():
             else:
                 response = {"error": f"Unknown method: {method}"}
 
-            # Send response
+            # Send response to stdout
             print(json.dumps(response, ensure_ascii=False))
 
-        except json.JSONDecodeError:
-            print(json.dumps({"error": "Invalid JSON request"}))
+        except json.JSONDecodeError as e:
+            print(json.dumps({"error": f"Invalid JSON request: {str(e)}"}))
         except Exception as e:
             print(json.dumps({"error": str(e)}))
+    else:
+        # No arguments provided
+        print(json.dumps({"error": "No JSON-RPC request provided"}))
+
 
 if __name__ == "__main__":
     main()
