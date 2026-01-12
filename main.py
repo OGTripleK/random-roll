@@ -123,9 +123,9 @@ class RandomRollPlugin:
         """Show usage instructions"""
         title = "Random Roll Usage"
         subtitle_parts = [
-            "• roll → Random yes/no",
-            "• roll N → Random number 1 to N",
-            "• roll A B → Random number A to B"
+            "* roll: Random yes/no",
+            "* roll N: Random number 1 to N",
+            "* roll A B: Random number A to B"
         ]
 
         if error_msg:
@@ -142,6 +142,11 @@ class RandomRollPlugin:
 def main():
     """Main entry point for the plugin"""
     plugin = RandomRollPlugin()
+
+    # Check if stdin is available
+    if sys.stdin is None:
+        print(json.dumps({"error": "stdin is not available"}))
+        return
 
     # Read from stdin line by line
     for line in sys.stdin:
