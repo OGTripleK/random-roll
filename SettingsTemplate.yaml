@@ -1,4 +1,13 @@
 body:
+  - type: dropdown
+    attributes:
+      name: Default Roll Type
+      label: "Default Roll Type:"
+      defaultValue: "Number"
+      options:
+        - Yes/No
+        - Number
+      description: "When user type prefix (default 'roll') without arguments, it will use this roll type"
   - type: input
     attributes:
       name: default_from
