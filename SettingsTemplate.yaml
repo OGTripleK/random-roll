@@ -1,0 +1,25 @@
+body:
+  - type: input
+    attributes:
+      name: default_from
+      label: "Default From:"
+      defaultValue: "1"
+      description: "Default starting number for random rolls (integer)"
+  - type: input
+    attributes:
+      name: default_to
+      label: "Default To:"
+      defaultValue: "6"
+      description: "Default ending number for random rolls (integer)"
+  - type: input
+    attributes:
+      name: yes_label
+      label: "Yes Label:"
+      defaultValue: "Yes"
+      description: "Text to display for positive yes/no answers"
+  - type: input
+    attributes:
+      name: no_label
+      label: "No Label:"
+      defaultValue: "No"
+      description: "Text to display for negative yes/no answers"

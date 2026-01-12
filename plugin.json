@@ -1,0 +1,12 @@
+{
+  "ID": "com.example.randomroll",
+  "Name": "Random Roll",
+  "Description": "Roll random numbers or yes/no answers in Flow Launcher",
+  "Author": "OGTripleK",
+  "Version": "1.0.0",
+  "Language": "python",
+  "Website": "",
+  "ExecuteFileName": "main.py",
+  "ActionKeyword": "roll",
+  "IcoPath": "icon.png"
+}
