@@ -87,7 +87,11 @@ class RandomRollPlugin:
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png"
+                "IcoPath": "icon.png",
+                "JsonRPCAction": {
+                    "method": "copy_to_clipboard",
+                    "parameters": [title]
+                }
             }
         else:
             # Click to roll mode: show prompt with action
@@ -125,7 +129,11 @@ class RandomRollPlugin:
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png"
+                "IcoPath": "icon.png",
+                "JsonRPCAction": {
+                    "method": "copy_to_clipboard",
+                    "parameters": [title]
+                }
             }
         else:
             # Click to roll mode: show prompt with action
@@ -158,7 +166,11 @@ class RandomRollPlugin:
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png"
+                "IcoPath": "icon.png",
+                "JsonRPCAction": {
+                    "method": "copy_to_clipboard",
+                    "parameters": [title]
+                }
             }
         else:
             # Click to roll mode: show prompt with action
@@ -197,7 +209,11 @@ class RandomRollPlugin:
                 result_dict = {
                     "Title": title,
                     "SubTitle": subtitle,
-                    "IcoPath": "icon.png"
+                    "IcoPath": "icon.png",
+                    "JsonRPCAction": {
+                        "method": "copy_to_clipboard",
+                        "parameters": [title]
+                    }
                 }
             else:
                 # Click to roll mode: show prompt with action
@@ -246,7 +262,11 @@ class RandomRollPlugin:
         return [{
             "Title": title,
             "SubTitle": subtitle,
-            "IcoPath": "icon.png"
+            "IcoPath": "icon.png",
+            "JsonRPCAction": {
+                "method": "copy_to_clipboard",
+                "parameters": [title]
+            }
         }]
 
     def do_roll_yes_no(self):
@@ -259,7 +279,11 @@ class RandomRollPlugin:
         return [{
             "Title": title,
             "SubTitle": subtitle,
-            "IcoPath": "icon.png"
+            "IcoPath": "icon.png",
+            "JsonRPCAction": {
+                "method": "copy_to_clipboard",
+                "parameters": [title]
+            }
         }]
 
     def do_roll_custom_label(self, labels_str):
@@ -271,7 +295,11 @@ class RandomRollPlugin:
         return [{
             "Title": title,
             "SubTitle": subtitle,
-            "IcoPath": "icon.png"
+            "IcoPath": "icon.png",
+            "JsonRPCAction": {
+                "method": "copy_to_clipboard",
+                "parameters": [title]
+            }
         }]
 
 def main():
