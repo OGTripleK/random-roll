@@ -24,6 +24,7 @@ class RandomRollPlugin:
     def load_settings(self):
         """Load settings from settings.json"""
         default_settings = {
+            "Default Roll Type": "Number",
             "default_from": 1,
             "default_to": 6,
             "yes_label": "Yes",
@@ -53,8 +54,15 @@ class RandomRollPlugin:
         parts = query.strip().split()
 
         if not parts:
-            # No arguments: random yes/no
-            return self.roll_yes_no()
+            # No arguments: use default roll type
+            roll_type = self.settings.get("Default Roll Type", "Number")
+            if roll_type == "Yes/No":
+                return self.roll_yes_no()
+            else:
+                # Default to Number roll with configured from/to values
+                from_val = int(self.settings.get("default_from", 1))
+                to_val = int(self.settings.get("default_to", 6))
+                return self.roll_range(from_val, to_val)
 
         if len(parts) == 1:
             # One argument: roll from 1 to N
