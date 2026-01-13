@@ -3,6 +3,7 @@
 A simple Flow Launcher plugin that generates random numbers, yes/no answers, or picks from custom labels.
 
 ## Installation
+
 Installation instructions will be provided soon.
 
 ## Usage
@@ -10,30 +11,39 @@ Installation instructions will be provided soon.
 Trigger the plugin by typing `roll` in Flow Launcher, followed by optional arguments:
 
 ### No Arguments (Default Behavior)
+
 ```
 roll
 ```
+
 Behavior depends on the **Default Roll Type** setting:
+
 - **Yes/No**: Returns either "Yes" or "No" (customizable)
 - **Number**: Returns a random number from configured range (default: 1-6)
 - **CustomLabel**: Returns a random pick from your custom labels
 
 ### Random Number (1 to N)
+
 ```
 roll 6
 ```
+
 Returns a random number from 1 to 6 (inclusive).
 
 ### Random Number (A to B)
+
 ```
 roll 10 20
 ```
+
 Returns a random number from 10 to 20 (inclusive). Order doesn't matter - `roll 20 10` works the same.
 
 ### Custom Labels
+
 ```
 roll Joe Kane John Katie
 ```
+
 Returns a random pick from the provided labels (when arguments are not numbers).
 
 ## Settings
