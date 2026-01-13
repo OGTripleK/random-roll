@@ -87,11 +87,7 @@ class RandomRollPlugin:
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png",
-                "JsonRPCAction": {
-                    "method": "copy_to_clipboard",
-                    "parameters": [title]
-                }
+                "IcoPath": "icon.png"
             }
         else:
             # Click to roll mode: show prompt with action
@@ -129,11 +125,7 @@ class RandomRollPlugin:
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png",
-                "JsonRPCAction": {
-                    "method": "copy_to_clipboard",
-                    "parameters": [title]
-                }
+                "IcoPath": "icon.png"
             }
         else:
             # Click to roll mode: show prompt with action
@@ -166,11 +158,7 @@ class RandomRollPlugin:
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png",
-                "JsonRPCAction": {
-                    "method": "copy_to_clipboard",
-                    "parameters": [title]
-                }
+                "IcoPath": "icon.png"
             }
         else:
             # Click to roll mode: show prompt with action
@@ -209,11 +197,7 @@ class RandomRollPlugin:
                 result_dict = {
                     "Title": title,
                     "SubTitle": subtitle,
-                    "IcoPath": "icon.png",
-                    "JsonRPCAction": {
-                        "method": "copy_to_clipboard",
-                        "parameters": [title]
-                    }
+                    "IcoPath": "icon.png"
                 }
             else:
                 # Click to roll mode: show prompt with action
@@ -254,36 +238,41 @@ class RandomRollPlugin:
             "IcoPath": "icon.png"
         }]
 
-    def copy_to_clipboard_native(self, text):
-        """Copy text to clipboard using Windows native command"""
-        import subprocess
-        try:
-            process = subprocess.Popen(['clip'], stdin=subprocess.PIPE, shell=True)
-            process.communicate(text.encode('utf-8'))
-        except:
-            pass
-
     def do_roll_range(self, start, end):
-        """Perform the actual roll for a number range and copy to clipboard"""
+        """Perform the actual roll for a number range and return results"""
         result = random.randint(int(start), int(end))
-        self.copy_to_clipboard_native(str(result))
-        return result
+        title = str(result)
+        subtitle = f"Random number between {start} and {end}"
+        return [{
+            "Title": title,
+            "SubTitle": subtitle,
+            "IcoPath": "icon.png"
+        }]
 
     def do_roll_yes_no(self):
-        """Perform the actual yes/no roll and copy to clipboard"""
+        """Perform the actual yes/no roll and return results"""
         result = random.choice([True, False])
         yes_label = self.settings.get("yes_label", "Yes")
         no_label = self.settings.get("no_label", "No")
-        text = yes_label if result else no_label
-        self.copy_to_clipboard_native(text)
-        return text
+        title = yes_label if result else no_label
+        subtitle = "Random yes/no answer"
+        return [{
+            "Title": title,
+            "SubTitle": subtitle,
+            "IcoPath": "icon.png"
+        }]
 
     def do_roll_custom_label(self, labels_str):
-        """Perform the actual custom label roll and copy to clipboard"""
+        """Perform the actual custom label roll and return results"""
         labels = labels_str.split("|")
         result = random.choice(labels)
-        self.copy_to_clipboard_native(result)
-        return result
+        title = result
+        subtitle = f"Random choice from: {', '.join(labels)}"
+        return [{
+            "Title": title,
+            "SubTitle": subtitle,
+            "IcoPath": "icon.png"
+        }]
 
 def main():
     """Main entry point for the plugin"""
@@ -308,17 +297,17 @@ def main():
             elif method == "do_roll_range":
                 start = parameters[0] if len(parameters) > 0 else 1
                 end = parameters[1] if len(parameters) > 1 else 6
-                result = plugin.do_roll_range(start, end)
-                response = {"result": []}
+                results = plugin.do_roll_range(start, end)
+                response = {"result": results}
             elif method == "do_roll_yes_no":
-                result = plugin.do_roll_yes_no()
-                response = {"result": []}
+                results = plugin.do_roll_yes_no()
+                response = {"result": results}
             elif method == "do_roll_custom_label":
                 labels_str = parameters[0] if parameters else ""
-                result = plugin.do_roll_custom_label(labels_str)
-                response = {"result": []}
+                results = plugin.do_roll_custom_label(labels_str)
+                response = {"result": results}
             else:
-                response = {"error": f"Unknown method: {method}"}
+                response = {"error": f\"Unknown method: {method}\"}
 
             # Send response to stdout
             print(json.dumps(response, ensure_ascii=False))
