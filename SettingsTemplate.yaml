@@ -7,6 +7,7 @@ body:
       options:
         - Yes/No
         - Number
+        - CustomLabel
       description: "When user type prefix (default 'roll') without arguments, it will use this roll type"
   - type: input
     attributes:
@@ -32,3 +33,9 @@ body:
       label: "No Label:"
       defaultValue: "No"
       description: "Text to display for negative yes/no answers"
+  - type: input
+    attributes:
+      name: custom_labels
+      label: "Custom Labels:"
+      defaultValue: "Joe Kane John Katie"
+      description: "Space-separated custom labels for random roll (e.g., 'Joe Kane John Katie')"

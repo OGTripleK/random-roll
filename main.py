@@ -35,6 +35,8 @@ class RandomRollPlugin:
             roll_type = self.settings.get("Default Roll Type", "Number")
             if roll_type == "Yes/No":
                 return self.roll_yes_no()
+            elif roll_type == "Custom Label":
+                return self.roll_custom_label()
             else:
                 # Default to Number roll with configured from/to values
                 try:
@@ -46,24 +48,26 @@ class RandomRollPlugin:
                 return self.roll_range(from_val, to_val)
 
         if len(parts) == 1:
-            # One argument: roll from 1 to N
+            # One argument: try to roll from 1 to N
             try:
                 to_val = int(parts[0])
                 return self.roll_range(1, to_val)
             except ValueError:
-                return self.show_usage("Invalid number. Expected integer.")
+                # Not a number, treat as single custom label (not very useful, but handle it)
+                return self.roll_custom_label_from_args(parts)
 
         if len(parts) == 2:
-            # Two arguments: roll from A to B
+            # Two arguments: try to roll from A to B
             try:
                 a_val = int(parts[0])
                 b_val = int(parts[1])
                 return self.roll_range(a_val, b_val)
             except ValueError:
-                return self.show_usage("Invalid numbers. Expected two integers.")
+                # Not valid numbers, treat as custom labels
+                return self.roll_custom_label_from_args(parts)
 
-        # Too many arguments
-        return self.show_usage("Too many arguments. Use 'roll', 'roll N', or 'roll A B'.")
+        # Multiple arguments: treat as custom labels
+        return self.roll_custom_label_from_args(parts)
 
     def roll_yes_no(self):
         """Generate a random yes/no result"""
@@ -72,6 +76,51 @@ class RandomRollPlugin:
         no_label = self.settings.get("no_label", "No")
         title = yes_label if result else no_label
         subtitle = "Random yes/no answer"
+
+        return [{
+            "Title": title,
+            "SubTitle": subtitle,
+            "IcoPath": "icon.png",
+            "JsonRPCAction": {
+                "method": "copy_to_clipboard",
+                "parameters": [title]
+            }
+        }]
+
+    def roll_custom_label(self):
+        """Generate a random result from custom labels"""
+        custom_labels_str = self.settings.get("custom_labels", "")
+        if not custom_labels_str or not custom_labels_str.strip():
+            return self.show_usage("No custom labels configured. Please set custom labels in settings.")
+        
+        # Split by whitespace to get individual labels
+        labels = custom_labels_str.strip().split()
+        
+        if not labels:
+            return self.show_usage("No custom labels configured. Please set custom labels in settings.")
+        
+        result = random.choice(labels)
+        title = result
+        subtitle = f"Random choice from: {', '.join(labels)}"
+
+        return [{
+            "Title": title,
+            "SubTitle": subtitle,
+            "IcoPath": "icon.png",
+            "JsonRPCAction": {
+                "method": "copy_to_clipboard",
+                "parameters": [title]
+            }
+        }]
+
+    def roll_custom_label_from_args(self, labels):
+        """Generate a random result from provided custom labels"""
+        if not labels:
+            return self.show_usage("No labels provided.")
+        
+        result = random.choice(labels)
+        title = result
+        subtitle = f"Random choice from: {', '.join(labels)}"
 
         return [{
             "Title": title,
@@ -114,9 +163,10 @@ class RandomRollPlugin:
         """Show usage instructions"""
         title = "Random Roll Usage"
         subtitle_parts = [
-            "* roll: Random yes/no",
+            "* roll: Random based on default type (yes/no, number, or custom label)",
             "* roll N: Random number 1 to N",
-            "* roll A B: Random number A to B"
+            "* roll A B: Random number A to B",
+            "* roll X Y Z...: Random choice from custom labels"
         ]
 
         if error_msg:
