@@ -74,7 +74,7 @@ class RandomRollPlugin:
         yes_label = self.settings.get("yes_label", "Yes")
         no_label = self.settings.get("no_label", "No")
         title = yes_label if result else no_label
-        subtitle = "Random yes/no answer"
+        subtitle = f"Random {yes_label}/{no_label} answer"
 
         return [{
             "Title": title,
