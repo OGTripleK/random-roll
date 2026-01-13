@@ -335,7 +335,7 @@ def main():
                 results = plugin.do_roll_custom_label(labels_str)
                 response = {"result": results}
             else:
-                response = {"error": f\"Unknown method: {method}\"}
+                response = {"error": f"Unknown method: {method}"}
 
             # Send response to stdout
             print(json.dumps(response, ensure_ascii=False))
