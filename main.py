@@ -79,11 +79,7 @@ class RandomRollPlugin:
         return [{
             "Title": title,
             "SubTitle": subtitle,
-            "IcoPath": "icon.png",
-            "JsonRPCAction": {
-                "method": "copy_to_clipboard",
-                "parameters": [title]
-            }
+            "IcoPath": "icon.png"
         }]
 
     def roll_custom_label(self):
@@ -105,11 +101,7 @@ class RandomRollPlugin:
         return [{
             "Title": title,
             "SubTitle": subtitle,
-            "IcoPath": "icon.png",
-            "JsonRPCAction": {
-                "method": "copy_to_clipboard",
-                "parameters": [title]
-            }
+            "IcoPath": "icon.png"
         }]
 
     def roll_custom_label_from_args(self, labels):
@@ -124,11 +116,7 @@ class RandomRollPlugin:
         return [{
             "Title": title,
             "SubTitle": subtitle,
-            "IcoPath": "icon.png",
-            "JsonRPCAction": {
-                "method": "copy_to_clipboard",
-                "parameters": [title]
-            }
+            "IcoPath": "icon.png"
         }]
 
     def roll_range(self, from_val, to_val):
@@ -149,11 +137,7 @@ class RandomRollPlugin:
             return [{
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png",
-                "JsonRPCAction": {
-                    "method": "copy_to_clipboard",
-                    "parameters": [title]
-                }
+                "IcoPath": "icon.png"
             }]
         except (ValueError, OverflowError):
             return self.show_usage("Invalid range values.")
