@@ -94,13 +94,17 @@ class RandomRollPlugin:
                 }
             }
         else:
-            # Click to roll mode: show prompt (non-actionable)
+            # Click to roll mode: show prompt with action
             title = f"Roll Yes/No"
             subtitle = f"Press Enter to randomly choose between '{yes_label}' and '{no_label}'"
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png"
+                "IcoPath": "icon.png",
+                "JsonRPCAction": {
+                    "method": "do_roll_yes_no",
+                    "parameters": []
+                }
             }
 
         return [result_dict]
@@ -132,13 +136,19 @@ class RandomRollPlugin:
                 }
             }
         else:
-            # Click to roll mode: show prompt (non-actionable)
+            # Click to roll mode: show prompt with action
             title = f"Roll Custom Label"
             subtitle = f"Press Enter to randomly choose from: {', '.join(labels)}"
+            # Use | as separator to pass labels
+            labels_param = "|".join(labels)
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png"
+                "IcoPath": "icon.png",
+                "JsonRPCAction": {
+                    "method": "do_roll_custom_label",
+                    "parameters": [labels_param]
+                }
             }
 
         return [result_dict]
@@ -163,13 +173,19 @@ class RandomRollPlugin:
                 }
             }
         else:
-            # Click to roll mode: show prompt (non-actionable)
+            # Click to roll mode: show prompt with action
             title = f"Roll Custom Label"
             subtitle = f"Press Enter to randomly choose from: {', '.join(labels)}"
+            # Use | as separator to pass labels
+            labels_param = "|".join(labels)
             result_dict = {
                 "Title": title,
                 "SubTitle": subtitle,
-                "IcoPath": "icon.png"
+                "IcoPath": "icon.png",
+                "JsonRPCAction": {
+                    "method": "do_roll_custom_label",
+                    "parameters": [labels_param]
+                }
             }
 
         return [result_dict]
@@ -200,13 +216,17 @@ class RandomRollPlugin:
                     }
                 }
             else:
-                # Click to roll mode: show prompt (non-actionable)
+                # Click to roll mode: show prompt with action
                 title = f"Roll Number"
                 subtitle = f"Press Enter to randomly generate a number between {start} and {end}"
                 result_dict = {
                     "Title": title,
                     "SubTitle": subtitle,
-                    "IcoPath": "icon.png"
+                    "IcoPath": "icon.png",
+                    "JsonRPCAction": {
+                        "method": "do_roll_range",
+                        "parameters": [start, end]
+                    }
                 }
 
             return [result_dict]
@@ -234,6 +254,37 @@ class RandomRollPlugin:
             "IcoPath": "icon.png"
         }]
 
+    def copy_to_clipboard_native(self, text):
+        """Copy text to clipboard using Windows native command"""
+        import subprocess
+        try:
+            process = subprocess.Popen(['clip'], stdin=subprocess.PIPE, shell=True)
+            process.communicate(text.encode('utf-8'))
+        except:
+            pass
+
+    def do_roll_range(self, start, end):
+        """Perform the actual roll for a number range and copy to clipboard"""
+        result = random.randint(int(start), int(end))
+        self.copy_to_clipboard_native(str(result))
+        return result
+
+    def do_roll_yes_no(self):
+        """Perform the actual yes/no roll and copy to clipboard"""
+        result = random.choice([True, False])
+        yes_label = self.settings.get("yes_label", "Yes")
+        no_label = self.settings.get("no_label", "No")
+        text = yes_label if result else no_label
+        self.copy_to_clipboard_native(text)
+        return text
+
+    def do_roll_custom_label(self, labels_str):
+        """Perform the actual custom label roll and copy to clipboard"""
+        labels = labels_str.split("|")
+        result = random.choice(labels)
+        self.copy_to_clipboard_native(result)
+        return result
+
 def main():
     """Main entry point for the plugin"""
     plugin = RandomRollPlugin()
@@ -254,6 +305,18 @@ def main():
                 query = parameters[0] if parameters else ""
                 results = plugin.handle_query(query)
                 response = {"result": results}
+            elif method == "do_roll_range":
+                start = parameters[0] if len(parameters) > 0 else 1
+                end = parameters[1] if len(parameters) > 1 else 6
+                result = plugin.do_roll_range(start, end)
+                response = {"result": []}
+            elif method == "do_roll_yes_no":
+                result = plugin.do_roll_yes_no()
+                response = {"result": []}
+            elif method == "do_roll_custom_label":
+                labels_str = parameters[0] if parameters else ""
+                result = plugin.do_roll_custom_label(labels_str)
+                response = {"result": []}
             else:
                 response = {"error": f"Unknown method: {method}"}
 
