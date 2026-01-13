@@ -69,13 +69,25 @@ class RandomRollPlugin:
         # Multiple arguments: treat as custom labels
         return self.roll_custom_label_from_args(parts)
 
+    def check_roll_mode(self):
+        """Check if roll mode is instant or click-to-roll"""
+        roll_mode = self.settings.get("Roll Mode", "Instant")
+        return roll_mode == "Instant"
+
     def roll_yes_no(self):
         """Generate a random yes/no result"""
-        result = random.choice([True, False])
         yes_label = self.settings.get("yes_label", "Yes")
         no_label = self.settings.get("no_label", "No")
-        title = yes_label if result else no_label
-        subtitle = "Random yes/no answer"
+        
+        if self.check_roll_mode():
+            # Instant mode: roll immediately
+            result = random.choice([True, False])
+            title = yes_label if result else no_label
+            subtitle = "Random yes/no answer"
+        else:
+            # Click to roll mode: show prompt
+            title = f"🎲 Roll Yes/No"
+            subtitle = f"Press Enter to randomly choose between '{yes_label}' and '{no_label}'"
 
         return [{
             "Title": title,
@@ -99,9 +111,15 @@ class RandomRollPlugin:
         if not labels:
             return self.show_usage("No custom labels configured. Please set custom labels in settings.")
         
-        result = random.choice(labels)
-        title = result
-        subtitle = f"Random choice from: {', '.join(labels)}"
+        if self.check_roll_mode():
+            # Instant mode: roll immediately
+            result = random.choice(labels)
+            title = result
+            subtitle = f"Random choice from: {', '.join(labels)}"
+        else:
+            # Click to roll mode: show prompt
+            title = f"🎲 Roll Custom Label"
+            subtitle = f"Press Enter to randomly choose from: {', '.join(labels)}"
 
         return [{
             "Title": title,
@@ -118,9 +136,15 @@ class RandomRollPlugin:
         if not labels:
             return self.show_usage("No labels provided.")
         
-        result = random.choice(labels)
-        title = result
-        subtitle = f"Random choice from: {', '.join(labels)}"
+        if self.check_roll_mode():
+            # Instant mode: roll immediately
+            result = random.choice(labels)
+            title = result
+            subtitle = f"Random choice from: {', '.join(labels)}"
+        else:
+            # Click to roll mode: show prompt
+            title = f"🎲 Roll Custom Label"
+            subtitle = f"Press Enter to randomly choose from: {', '.join(labels)}"
 
         return [{
             "Title": title,
@@ -143,9 +167,15 @@ class RandomRollPlugin:
             return self.show_usage("Range too large. Maximum range size is 10,000,000.")
 
         try:
-            result = random.randint(start, end)
-            title = str(result)
-            subtitle = f"Random number between {start} and {end}"
+            if self.check_roll_mode():
+                # Instant mode: roll immediately
+                result = random.randint(start, end)
+                title = str(result)
+                subtitle = f"Random number between {start} and {end}"
+            else:
+                # Click to roll mode: show prompt
+                title = f"🎲 Roll Number"
+                subtitle = f"Press Enter to randomly generate a number between {start} and {end}"
 
             return [{
                 "Title": title,

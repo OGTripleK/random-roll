@@ -1,6 +1,15 @@
 body:
   - type: dropdown
     attributes:
+      name: Roll Mode
+      label: "Roll Mode:"
+      defaultValue: "Instant"
+      options:
+        - Instant
+        - ClickToRoll
+      description: "Instant: Shows result immediately | ClickToRoll: Shows prompt, press Enter to roll"
+  - type: dropdown
+    attributes:
       name: Default Roll Type
       label: "Default Roll Type:"
       defaultValue: "Number"
