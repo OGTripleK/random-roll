@@ -16,38 +16,15 @@ import random
 from pathlib import Path
 
 class RandomRollPlugin:
-    def __init__(self):
+    def __init__(self, settings=None):
         self.plugin_dir = Path(__file__).parent
-        self.settings_file = self.plugin_dir / "settings.json"
-        self.settings = self.load_settings()
-
-    def load_settings(self):
-        """Load settings from settings.json"""
-        default_settings = {
-            "Default Roll Type": "Number",
-            "default_from": 1,
-            "default_to": 6,
-            "yes_label": "Yes",
-            "no_label": "No"
-        }
-
-        if self.settings_file.exists():
-            try:
-                with open(self.settings_file, 'r', encoding='utf-8') as f:
-                    loaded = json.load(f)
-                    default_settings.update(loaded)
-            except (json.JSONDecodeError, IOError):
-                pass
-
-        return default_settings
-
-    def save_settings(self):
-        """Save settings to settings.json"""
-        try:
-            with open(self.settings_file, 'w', encoding='utf-8') as f:
-                json.dump(self.settings, f, indent=2, ensure_ascii=False)
-        except IOError:
-            pass
+        # Settings will be passed from Flow Launcher
+        self.settings = settings if settings is not None else {}
+    
+    def update_settings(self, settings):
+        """Update settings with values from Flow Launcher"""
+        if settings:
+            self.settings = settings
 
     def handle_query(self, query):
         """Handle a query from Flow Launcher"""
@@ -60,8 +37,12 @@ class RandomRollPlugin:
                 return self.roll_yes_no()
             else:
                 # Default to Number roll with configured from/to values
-                from_val = int(self.settings.get("default_from", 1))
-                to_val = int(self.settings.get("default_to", 6))
+                try:
+                    from_val = int(self.settings.get("default_from", 1))
+                    to_val = int(self.settings.get("default_to", 6))
+                except (ValueError, TypeError):
+                    from_val = 1
+                    to_val = 6
                 return self.roll_range(from_val, to_val)
 
         if len(parts) == 1:
@@ -87,7 +68,9 @@ class RandomRollPlugin:
     def roll_yes_no(self):
         """Generate a random yes/no result"""
         result = random.choice([True, False])
-        title = self.settings["yes_label"] if result else self.settings["no_label"]
+        yes_label = self.settings.get("yes_label", "Yes")
+        no_label = self.settings.get("no_label", "No")
+        title = yes_label if result else no_label
         subtitle = "Random yes/no answer"
 
         return [{
@@ -158,6 +141,10 @@ def main():
             request = json.loads(sys.argv[1])
             method = request.get("method", "")
             parameters = request.get("parameters", [])
+            settings = request.get("settings", {})
+            
+            # Update plugin settings with values from Flow Launcher
+            plugin.update_settings(settings)
 
             if method == "query":
                 query = parameters[0] if parameters else ""
