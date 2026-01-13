@@ -35,7 +35,7 @@ class RandomRollPlugin:
             roll_type = self.settings.get("Default Roll Type", "Number")
             if roll_type == "Yes/No":
                 return self.roll_yes_no()
-            elif roll_type == "Custom Label":
+            elif roll_type == "CustomLabel":
                 return self.roll_custom_label()
             else:
                 # Default to Number roll with configured from/to values
