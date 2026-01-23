@@ -8,12 +8,12 @@ Installation instructions will be provided soon.
 
 ## Usage
 
-Trigger the plugin by typing `rdr` in Flow Launcher, followed by optional arguments:
+Trigger the plugin by typing `rolls` in Flow Launcher, followed by optional arguments:
 
 ### No Arguments (Default Behavior)
 
 ```
-rdr
+rolls
 ```
 
 Behavior depends on the **Default Roll Type** setting:
@@ -25,7 +25,7 @@ Behavior depends on the **Default Roll Type** setting:
 ### Random Number (1 to N)
 
 ```
-rdr 6
+rolls 6
 ```
 
 Returns a random number from 1 to 6 (inclusive).
@@ -33,15 +33,15 @@ Returns a random number from 1 to 6 (inclusive).
 ### Random Number (A to B)
 
 ```
-rdr 10 20
+rolls 10 20
 ```
 
-Returns a random number from 10 to 20 (inclusive). Order doesn't matter - `rdr 20 10` works the same.
+Returns a random number from 10 to 20 (inclusive). Order doesn't matter - `rolls 20 10` works the same.
 
 ### Custom Labels
 
 ```
-rdr Joe Kane John Katie
+rolls Joe Kane John Katie
 ```
 
 Returns a random pick from the provided labels (when arguments are not numbers).
@@ -60,19 +60,19 @@ The plugin includes configurable settings that can be edited through Flow Launch
 ## Examples
 
 ```
-rdr               → "Yes" or "No" (or number/custom label based on settings)
-rdr 6             → Random number: 1, 2, 3, 4, 5, or 6
-rdr 1 10          → Random number between 1 and 10
-rdr 100 200       → Random number between 100 and 200
-rdr A B C D       → Random pick from: A, B, C, or D
+rolls               → "Yes" or "No" (or number/custom label based on settings)
+rolls 6             → Random number: 1, 2, 3, 4, 5, or 6
+rolls 1 10          → Random number between 1 and 10
+rolls 100 200       → Random number between 100 and 200
+rolls A B C D       → Random pick from: A, B, C, or D
 ```
 
 ## Edge Cases
 
 - **Invalid number input**: Shows usage instructions
 - **Large ranges**: Ranges larger than 10,000,000 are rejected for performance
-- **Single number**: `rdr N` is treated as `rdr 1 N`
-- **Order independence**: `rdr 5 1` works the same as `rdr 1 5`
+- **Single number**: `rolls N` is treated as `rolls 1 N`
+- **Order independence**: `rolls 5 1` works the same as `rolls 1 5`
 - **Empty custom labels**: Shows error if custom labels are not configured
 
 ## Requirements

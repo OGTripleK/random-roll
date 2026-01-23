@@ -4,9 +4,9 @@ Random Roll Flow Launcher Plugin
 
 A plugin that generates random numbers or yes/no answers.
 Usage:
-- rdr: Random yes/no answer
-- rdr N: Random number from 1 to N
-- rdr A B: Random number from A to B (inclusive)
+- rolls: Random yes/no answer
+- rolls N: Random number from 1 to N
+- rolls A B: Random number from A to B (inclusive)
 """
 
 import json

@@ -8,7 +8,7 @@ body:
         - Yes/No
         - Number
         - CustomLabel
-      description: "When user type prefix (default 'rdr') without arguments, it will use this roll type"
+      description: "When user type prefix (default 'rolls') without arguments, it will use this roll type"
   - type: input
     attributes:
       name: default_from
