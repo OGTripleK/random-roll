@@ -3,8 +3,11 @@
 A simple Flow Launcher plugin that generates random numbers, yes/no answers, or picks from custom labels.
 
 ## Installation
-
-Installation instructions will be provided soon.
+1. Flow Launcher Plugin Manager  
+```
+pm install Random Roll by OGTripleK
+```
+2. Browse through Plugin store and search "Random Roll"  
 
 ## Usage
 
